@@ -96,7 +96,18 @@ class CompanyController extends Controller
     */
     public function destroy(Company $company)
     {
-        $company->delete();
-        return redirect()->route('companies.index')->with('success','Company has been deleted successfully');
+        try{
+            $company->delete();
+            return redirect()->route('companies.index')->with('success','Company has been deleted successfully');   
+        }catch (\Exception $e) {
+            // Log the error (optional)
+            \Log::error($e->getMessage());
+    
+            // Display an error message or redirect to an error page
+            return back()->with('error', 'An error occurred while deleting the company');
+        }
+        
     }
+   
+
 }
